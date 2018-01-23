@@ -20,4 +20,4 @@ svn checkout https://github.com/keeferrourke/capitaine-cursors/trunk/dist/cursor
 gtk-update-icon-cache ~/.icons/la-capitaine-icon-theme
 
 # xfce4桌面图标下字体阴影解决:
-#xfconf-query -c xfce4-desktop -p /desktop-icons/center-text -n -t bool -s false
+xfconf-query -c xfce4-desktop -p /desktop-icons/center-text -n -t bool -s false
