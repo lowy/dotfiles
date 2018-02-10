@@ -1,6 +1,6 @@
 #!/bin/bash
 #sudo apt install gtk2-engines-murrine gtk2-engines-pixbuf subversion
-#sudo apt install feh 
+#sudo apt install feh bc
 
 # 安装字体source-code-pro
 mkdir ~/.fonts/
@@ -18,9 +18,9 @@ chmod +x ~/.local/share/applications/update-matcha-online.desktop
 # 安装图标主题la-capitaine
 mkdir ~/.icons/ && cd ~/.icons/
 git clone https://github.com/keeferrourke/la-capitaine-icon-theme.git
-cd ./la-capitaine-icon-theme/
+mv la-capitaine-icon-theme la-capitaine && cd la-capitaine
 svn checkout https://github.com/keeferrourke/capitaine-cursors/trunk/dist/cursors
-gtk-update-icon-cache ~/.icons/la-capitaine-icon-theme
+gtk-update-icon-cache ~/.icons/la-capitaine
 
 # 安装必应桌面壁纸
 mkdir ~/.local/bin/
