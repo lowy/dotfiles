@@ -1,10 +1,13 @@
 #!/bin/bash
 #sudo apt install gtk2-engines-murrine gtk2-engines-pixbuf subversion
+#sudo apt install feh 
 
 # 安装字体source-code-pro
-mkdir -p ~/.fonts/
+mkdir ~/.fonts/
 git clone --depth 1 --branch release https://github.com/adobe-fonts/source-code-pro.git ~/.fonts/source-code-pro
 fc-cache -f -v ~/.fonts/source-code-pro
+# xfce4桌面图标下字体阴影解决:
+xfconf-query -c xfce4-desktop -p /desktop-icons/center-text -n -t bool -s false
 
 # 安装桌面gtk主题matcha
 mkdir -p ~/.local/share/applications/
@@ -13,11 +16,16 @@ chmod +x ~/.local/share/applications/update-matcha-online.desktop
 ~/.local/share/applications/update-matcha-online.desktop
 
 # 安装图标主题la-capitaine
-mkdir -p ~/.icons/ && cd ~/.icons/
+mkdir ~/.icons/ && cd ~/.icons/
 git clone https://github.com/keeferrourke/la-capitaine-icon-theme.git
 cd ./la-capitaine-icon-theme/
 svn checkout https://github.com/keeferrourke/capitaine-cursors/trunk/dist/cursors
 gtk-update-icon-cache ~/.icons/la-capitaine-icon-theme
 
-# xfce4桌面图标下字体阴影解决:
-xfconf-query -c xfce4-desktop -p /desktop-icons/center-text -n -t bool -s false
+# 安装必应桌面壁纸
+mkdir ~/.local/bin/
+wget -P ~/.local/bin/ https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bingwallpaper
+chmod +x ~/.local/bin/bingwallpaper
+wget -P ~/.icons/ https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bing.png
+wget -P ~/.local/share/applications/ https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bingwallpaper.desktop
+chmod +x ~/.local/share/applications/bingwallpaper.desktop
