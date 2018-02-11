@@ -1,0 +1,161 @@
+#!/bin/bash
+## 修改本地源
+cat > /etc/apt/sources.list << EOF
+deb https://mirrors.ustc.edu.cn/debian unstable main contrib non-free
+deb https://mirrors.ustc.edu.cn/debian experimental main contrib non-free
+
+deb https://mirrors.ustc.edu.cn/debian/ buster main contrib non-free
+deb https://mirrors.ustc.edu.cn/debian/ buster-updates main contrib non-free
+deb https://mirrors.ustc.edu.cn/debian/ buster-proposed-updates main contrib non-free
+deb https://mirrors.ustc.edu.cn/debian-security/ buster/updates main contrib non-free
+
+EOF
+
+## 设置不同源的优先级
+cat > /etc/apt/preferences << EOF
+Package: *
+Pin: release a=unstable
+Pin-Priority: 1
+
+Package: *
+Pin: release a=experimental
+Pin-Priority: 1
+EOF
+
+apt update && apt upgrade -y && apt install -y apt-transport-https wget
+
+## 添加中文社区源
+echo "deb https://mirrors.ustc.edu.cn/debiancn/ buster main" >> /etc/apt/sources.list
+wget https://mirrors.ustc.edu.cn/debiancn/debiancn-keyring_0~20161212_all.deb -O /tmp/debiancn-keyring.deb
+apt install -y /tmp/debiancn-keyring.deb
+
+## 添加deb-multimedia源
+echo "deb https://mirrors.ustc.edu.cn/deb-multimedia/ buster main non-free" >> /etc/apt/sources.list
+wget https://mirrors.ustc.edu.cn/deb-multimedia/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb -O /tmp/deb-multimedia-keyring.deb
+apt install -y /tmp/deb-multimedia-keyring.deb
+
+apt update && apt upgrade -y
+
+## 安装缺失固件
+apt install -y firmware-linux-free firmware-linux-nonfree firmware-realtek firmware-amd-graphics
+
+##xorg.conf
+cat > /etc/X11/xorg.conf << EOF
+Section "Monitor"
+	Identifier  "Monitor0"
+	Modeline    "1600x900" 118.25  1600 1696 1856 2112  900 903 908 934 -hsync +vsync
+	Option      "PreferredMode" "1600x900"
+EndSection
+
+Section "Device"
+        Identifier  "Card0"
+	Driver      "radeon"
+	Option      "Monitor-VGA-0" "Monitor0"
+EndSection
+
+Section "Screen"
+	Identifier    "Screen0"
+	Device        "Card0"
+	DefaultDepth  24
+	SubSection "Display"
+		Modes     "1600x900"
+		Depth      24
+	EndSubSection
+EndSection
+EOF
+cp /etc/X11/xorg.conf /etc/X11/xorg.conf.bak
+
+##sudo 需要安装过程中已经设置了一个普通用户
+apt install -y sudo
+adduser $(echo `cat /etc/passwd | grep 1000 | cut -c1-4`) sudo
+echo "$(echo `cat /etc/passwd | grep 1000 | cut -c1-4`)    ALL=(ALL:ALL) ALL" >> /etc/sudoers
+
+## 安装图形化包管理器
+apt install -y gdebi synaptic apt-xapian-index
+
+## 安装下载器
+apt install -y curl axel aria2 uget
+
+## 安装火狐浏览器及其相关
+apt install -y fonts-stix flashplayer-mozilla firefox/unstable firefox-l10n-zh-cn/unstable
+
+## 安装python3及配置pip源
+apt install -y python3 python3-pip
+cat > /etc/pip.conf << EOF
+[global]
+index-url = https://mirrors.ustc.edu.cn/pypi/web/simple
+format = columns
+EOF
+
+## usb挂载安卓设备 配置文件具体参数挂载后使用lsusb查看
+apt install -y mtp-tools libmtp9 libmtp-dev libmtp-common libmtp-runtime gvfs-backends
+echo "user_allow_other" >> /etc/fuse.conf
+curl --create-dirs -L -o /etc/udev/rules.d/51-android.rules -O -L https://raw.githubusercontent.com/snowdream/51-android/master/51-android.rules
+chmod a+r /etc/udev/rules.d/51-android.rules
+service udev restart
+
+## usb挂载ipod/ipad/iphone 使用ideviceinfo查看具体挂载信息
+apt install -y libimobiledevice-dev libimobiledevice-utils libgpod-dev
+# apt install -y shotwell rhythmbox vlc
+
+## 安装视频播放器moonplayer
+echo "deb http://ppa.launchpad.net/cos-lyk/moonsoft/ubuntu zesty main" > /etc/apt/sources.list.d/moonplayer.list
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1AABC1B897291923
+apt update && apt install -y moonplayer
+
+## 安装录音软件audio-recorder
+echo "deb http://ppa.launchpad.net/audio-recorder/ppa/ubuntu zesty main" > /etc/apt/sources.list.d/audio-recorder.list
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5CF12638ACF9669F
+apt update && apt install -y audio-recorder
+
+## 安装VSCode
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+apt update && apt install -y code
+
+## 安装sublime
+apt install -y sublime-text-dev
+echo "127.0.0.1 www.sublimetext.com" >> /etc/hosts
+
+## 安装xboard及其配置三大棋
+sudo apt install -y xboard fairymax hoichess
+wget -P /tmp/ http://home.hccnet.nl/h.g.muller/shokidoki-x64.gz
+zcat /tmp/shokidoki-x64.gz > /usr/games/shokidoki
+chmod +x /usr/games/shokidoki
+cat > /usr/share/applications/chess.desktop << EOF
+[Desktop Entry]
+Type=Application
+Comment=Xboard of Chess
+Name=Chess
+Name[zh_CN]=国际象棋
+Exec=xboard -fcp fairymax -pid /usr/share/games/xboard/themes/default -overrideLineGap 1 -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/wood_l.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/wood_d.png
+Icon=/usr/share/games/xboard/themes/default/BlackKnight.svg
+Categories=Game
+Terminal=false
+EOF
+chmod +x /usr/share/applications/chess.desktop
+cat > /usr/share/applications/shogi.desktop << EOF
+[Desktop Entry]
+Type=Application
+Comment=Xboard of Shogi
+Name=Shogi
+Name[zh_CN]=日本将棋
+Exec=xboard -fcp shokidoki -pid /usr/share/games/xboard/themes/shogi -variant shogi -overrideLineGap 1 -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/wood_l.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/wood_l.png
+Icon=/usr/share/games/xboard/themes/shogi/WhiteRook.svg
+Categories=Game
+Terminal=false
+EOF
+chmod +x /usr/share/applications/shogi.desktop
+cat > /usr/share/applications/xiangqi.desktop << EOF
+[Desktop Entry]
+Type=Application
+Comment=Xboard of Xiangqi
+Name=Xiangqi
+Name[zh_CN]=中国象棋
+Exec=xboard -fcp hoixiangqi -pid /usr/share/games/xboard/themes/xiangqi -variant xiangqi -overrideLineGap 0 -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/xqboard-9x10.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/xqboard-9x10.png
+Icon=/usr/share/games/xboard/themes/xiangqi/BlackElephant.svg
+Categories=Game
+Terminal=false
+EOF
+chmod +x /usr/share/applications/xiangqi.desktop
