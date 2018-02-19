@@ -87,6 +87,13 @@ index-url = https://mirrors.ustc.edu.cn/pypi/web/simple
 format = columns
 EOF
 
+## 安装golang及其配置
+apt install -y golang
+cat >> /etc/profile << EOF
+export GOROOT=/usr/lib/go
+export PATH=$PATH:$GOROOT/bin
+EOF
+
 ## usb挂载安卓设备 配置文件具体参数挂载后使用lsusb查看
 apt install -y mtp-tools libmtp9 libmtp-dev libmtp-common libmtp-runtime gvfs-backends
 echo "user_allow_other" >> /etc/fuse.conf
