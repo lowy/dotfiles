@@ -91,7 +91,8 @@ EOF
 apt install -y golang
 cat >> /etc/profile << EOF
 export GOROOT=/usr/lib/go
-export PATH=$PATH:$GOROOT/bin
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 EOF
 
 ## usb挂载安卓设备 配置文件具体参数挂载后使用lsusb查看
