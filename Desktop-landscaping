@@ -9,7 +9,9 @@ fc-cache -f -v ~/.fonts/source-code-pro
 # xfce4桌面图标下字体阴影解决:
 xfconf-query -c xfce4-desktop -p /desktop-icons/center-text -n -t bool -s false
 
-# 安装桌面gtk主题matcha
+# 安装桌面gtk主题ant和matcha
+mkdir ~/.themes/ && cd ~/.themes/
+git clone https://github.com/EliverLara/Ant.git
 mkdir -p ~/.local/share/applications/
 wget -P ~/.local/share/applications/ https://github.com/vinceliuice/matcha/blob/master/update-matcha-online.desktop
 chmod +x ~/.local/share/applications/update-matcha-online.desktop
