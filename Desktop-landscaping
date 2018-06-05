@@ -2,27 +2,28 @@
 #sudo apt install gtk2-engines-murrine gtk2-engines-pixbuf subversion
 #sudo apt install feh bc
 
+# 安装桌面gtk主题matcha
+mkdir ~/.themes/
+mkdir -p ~/.local/share/applications/
+wget -P ~/.local/share/applications/ https://github.com/vinceliuice/matcha/blob/master/update-matcha-online.desktop
+chmod +x ~/.local/share/applications/update-matcha-online.desktop
+~/.local/share/applications/update-matcha-online.desktop
+
+# 安装图标主题numix-circle和la-capitaine
+mkdir ~/.icons/ && cd ~/.icons/
+svn checkout https://github.com/numixproject/numix-icon-theme-circle/trunk/Numix-Circle
+svn checkout https://github.com/numixproject/numix-icon-theme-circle/trunk/Numix-Circle-Light
+git clone https://github.com/keeferrourke/la-capitaine-icon-theme.git
+mv la-capitaine-icon-theme la-capitaine && cd la-capitaine
+svn checkout https://github.com/keeferrourke/capitaine-cursors/trunk/dist/cursors
+gtk-update-icon-cache ~/.icons/Numix-Circle ~/.icons/Numix-Circle-Light  ~/.icons/la-capitaine
+
 # 安装字体source-code-pro
 mkdir ~/.fonts/
 git clone --depth 1 --branch release https://github.com/adobe-fonts/source-code-pro.git ~/.fonts/source-code-pro
 fc-cache -f -v ~/.fonts/source-code-pro
 # xfce4桌面图标下字体阴影解决:
 xfconf-query -c xfce4-desktop -p /desktop-icons/center-text -n -t bool -s false
-
-# 安装桌面gtk主题ant和matcha
-mkdir ~/.themes/ && cd ~/.themes/
-git clone https://github.com/EliverLara/Ant.git
-mkdir -p ~/.local/share/applications/
-wget -P ~/.local/share/applications/ https://github.com/vinceliuice/matcha/blob/master/update-matcha-online.desktop
-chmod +x ~/.local/share/applications/update-matcha-online.desktop
-~/.local/share/applications/update-matcha-online.desktop
-
-# 安装图标主题la-capitaine
-mkdir ~/.icons/ && cd ~/.icons/
-git clone https://github.com/keeferrourke/la-capitaine-icon-theme.git
-mv la-capitaine-icon-theme la-capitaine && cd la-capitaine
-svn checkout https://github.com/keeferrourke/capitaine-cursors/trunk/dist/cursors
-gtk-update-icon-cache ~/.icons/la-capitaine
 
 # 安装必应桌面壁纸
 mkdir ~/.local/bin/
