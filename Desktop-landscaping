@@ -27,8 +27,8 @@ xfconf-query -c xfce4-desktop -p /desktop-icons/center-text -n -t bool -s false
 
 # 安装必应桌面壁纸
 mkdir ~/.local/bin/
-wget -P ~/.local/bin/ https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bingwallpaper
+wget -P ~/.local/bin/ https://raw.githubusercontent.com/yowl9619/linux-bing-wallpaper/master/bingwallpaper
 chmod +x ~/.local/bin/bingwallpaper
-wget -P ~/.icons/ https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bing.png
-wget -P ~/.local/share/applications/ https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bingwallpaper.desktop
+wget -P ~/.icons/ https://raw.githubusercontent.com/yowl9619/linux-bing-wallpaper/master/bing.png
+wget -P ~/.local/share/applications/ https://raw.githubusercontent.com/yowl9619/linux-bing-wallpaper/master/bingwallpaper.desktop
 chmod +x ~/.local/share/applications/bingwallpaper.desktop
