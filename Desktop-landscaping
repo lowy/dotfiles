@@ -18,10 +18,12 @@ mv la-capitaine-icon-theme la-capitaine && cd la-capitaine
 svn checkout https://github.com/keeferrourke/capitaine-cursors/trunk/dist/cursors
 gtk-update-icon-cache ~/.icons/Numix-Circle ~/.icons/Numix-Circle-Light  ~/.icons/la-capitaine
 
-# 安装字体source-code-pro
+# 安装字体source-code-pro和powerline-fonts
 mkdir ~/.fonts/
 git clone --depth 1 --branch release https://github.com/adobe-fonts/source-code-pro.git ~/.fonts/source-code-pro
-fc-cache -f -v ~/.fonts/source-code-pro
+git clone --depth 1 --branch release https://github.com/powerline-fonts.git ~/.fonts/powerline-fonts
+fc-cache -vf ~/.fonts
+
 # xfce4桌面图标下字体阴影解决:
 xfconf-query -c xfce4-desktop -p /desktop-icons/center-text -n -t bool -s false
 
