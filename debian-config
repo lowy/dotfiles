@@ -129,7 +129,7 @@ echo "127.0.0.1 www.sublimetext.com" >> /etc/hosts
 ## 安装xboard及其配置三大棋
 sudo apt install -y xboard fairymax hoichess
 wget -P /tmp/ http://home.hccnet.nl/h.g.muller/shokidoki-x64.gz
-zcat /tmp/shokidoki-x64.gz > /usr/games/shokidoki
+zcat /tmp/shokidoki-x64.gz > /usr/bin/shokidoki
 chmod +x /usr/games/shokidoki
 cat > /usr/share/applications/chess.desktop << EOF
 [Desktop Entry]
@@ -137,7 +137,7 @@ Type=Application
 Comment=Xboard of Chess
 Name=Chess
 Name[zh_CN]=国际象棋
-Exec=xboard -fcp fairymax -pid /usr/share/games/xboard/themes/default -overrideLineGap 1 -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/wood_l.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/wood_d.png
+Exec=xboard -fcp fairymax -scp fairymax -pid /usr/share/games/xboard/themes/default/ -clockMode true -tc 5 -mps 30 -showMoveTime true -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/hatch.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/hatch.png
 Icon=/usr/share/games/xboard/themes/default/BlackKnight.svg
 Categories=Game
 Terminal=false
@@ -149,7 +149,7 @@ Type=Application
 Comment=Xboard of Shogi
 Name=Shogi
 Name[zh_CN]=日本将棋
-Exec=xboard -fcp shokidoki -pid /usr/share/games/xboard/themes/shogi -variant shogi -overrideLineGap 1 -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/wood_l.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/wood_l.png
+Exec=xboard -variant shogi -fcp shokidoki -scp shokidoki -pid /usr/share/games/xboard/themes/shogi/ -clockMode true -tc 5 -mps 30 -showMoveTime true -positionDir /usr/share/games/xboard/themes/conf/shogi -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/wood_d.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/wood_d.png
 Icon=/usr/share/games/xboard/themes/shogi/WhiteRook.svg
 Categories=Game
 Terminal=false
@@ -161,7 +161,7 @@ Type=Application
 Comment=Xboard of Xiangqi
 Name=Xiangqi
 Name[zh_CN]=中国象棋
-Exec=xboard -fcp hoixiangqi -pid /usr/share/games/xboard/themes/xiangqi -variant xiangqi -overrideLineGap 0 -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/xqboard-9x10.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/xqboard-9x10.png
+Exec=xboard -variant xiangqi -fcp hoixiangqi -scp hoixiangqi -pid /usr/share/games/xboard/themes/xiangqi/ -clockMode true -tc 5 -mps 30 -showMoveTime true -positionDir /usr/share/games/xboard/themes/conf/xq -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/xqboard-9x10.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/xqboard-9x10.png
 Icon=/usr/share/games/xboard/themes/xiangqi/BlackElephant.svg
 Categories=Game
 Terminal=false
