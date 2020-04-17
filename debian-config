@@ -1,20 +1,21 @@
 #!/bin/bash
 ## 修改本地源
 cat > /etc/apt/sources.list << EOF
-deb https://mirrors.ustc.edu.cn/debian unstable main contrib non-free
-deb https://mirrors.ustc.edu.cn/debian experimental main contrib non-free
+deb http://mirrors.163.com/debian/ bullseye main contrib non-free
+deb http://mirrors.163.com/debian/ bullseye-updates main contrib non-free
+deb http://mirrors.163.com/debian/ bullseye-backports main contrib non-free
+deb http://mirrors.163.com/debian/ bullseye-proposed-updates main contrib non-free
+deb http://mirrors.163.com/debian-security/ bullseye-security main contrib non-free
 
-deb https://mirrors.ustc.edu.cn/debian/ buster main contrib non-free
-deb https://mirrors.ustc.edu.cn/debian/ buster-updates main contrib non-free
-deb https://mirrors.ustc.edu.cn/debian/ buster-proposed-updates main contrib non-free
-deb https://mirrors.ustc.edu.cn/debian-security/ buster/updates main contrib non-free
+deb http://mirrors.163.com/debian/ sid main contrib non-free
+deb http://mirrors.163.com/debian/ experimental main contrib non-free
 
 EOF
 
 ## 设置不同源的优先级
 cat > /etc/apt/preferences << EOF
 Package: *
-Pin: release a=unstable
+Pin: release a=sid
 Pin-Priority: 1
 
 Package: *
@@ -22,17 +23,18 @@ Pin: release a=experimental
 Pin-Priority: 1
 EOF
 
-apt update && apt upgrade -y && apt install -y apt-transport-https wget
+apt update && apt upgrade -y && apt install -y apt-transport-https wget curl axel uget aria2
 
-## 添加中文社区源
-echo "deb https://mirrors.ustc.edu.cn/debiancn/ buster main" >> /etc/apt/sources.list
-wget https://mirrors.ustc.edu.cn/debiancn/debiancn-keyring_0~20161212_all.deb -O /tmp/debiancn-keyring.deb
+## 添加debiancn源
+echo "deb https://repo.debiancn.org/ bullseye main" >> /etc/apt/sources.list
+wget https://repo.debiancn.org/pool/main/d/debiancn-keyring/debiancn-keyring_0~20161212_all.deb -O /tmp/debiancn-keyring.deb
 apt install -y /tmp/debiancn-keyring.deb
+rm /tmp/debiancn-keyring.deb
 
-## 添加deb-multimedia源
-echo "deb https://mirrors.ustc.edu.cn/deb-multimedia/ buster main non-free" >> /etc/apt/sources.list
-wget https://mirrors.ustc.edu.cn/deb-multimedia/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb -O /tmp/deb-multimedia-keyring.deb
-apt install -y /tmp/deb-multimedia-keyring.deb
+## 添加debianopt源
+echo "deb https://dl.bintray.com/debianopt/debianopt buster main" >> /etc/apt/sources.list
+curl -o bintray-public.key.asc https://bintray.com/user/downloadSubjectPublicKey?username=bintray
+sudo apt-key add bintray-public.key.asc
 
 apt update && apt upgrade -y
 
@@ -73,11 +75,8 @@ echo "$(echo `cat /etc/passwd | grep 1000 | cut -c1-4`)    ALL=(ALL:ALL) ALL" >>
 ## 安装图形化包管理器
 apt install -y gdebi synaptic apt-xapian-index
 
-## 安装下载器
-apt install -y curl axel aria2 uget
-
 ## 安装火狐浏览器及其相关
-apt install -y fonts-stix flashplayer-mozilla firefox/unstable firefox-l10n-zh-cn/unstable
+apt install -y -t sid fonts-stix flashplayer-mozilla firefox firefox-l10n-zh-cn
 
 ## 安装python3及配置pip源
 apt install -y python3 python3-pip
