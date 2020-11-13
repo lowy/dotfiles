@@ -39,7 +39,7 @@ sudo apt-key add bintray-public.key.asc
 apt update && apt upgrade -y
 
 ## 安装缺失固件
-apt install -y firmware-linux-free firmware-linux-nonfree firmware-realtek firmware-amd-graphics
+apt install -y firmware-linux-free firmware-linux-nonfree firmware-realtek firmware-amd-graphics firmware-iwlwifi
 
 ##xorg.conf
 cat > /etc/X11/xorg.conf << EOF
@@ -126,9 +126,9 @@ apt install -y sublime-text-dev
 echo "127.0.0.1 www.sublimetext.com" >> /etc/hosts
 
 ## 安装xboard及其配置三大棋
-sudo apt install -y xboard fairymax hoichess
+sudo apt install -y xboard polyglot fairy-stockfish stockfish sjaakii
 wget -P /tmp/ http://home.hccnet.nl/h.g.muller/shokidoki-x64.gz
-zcat /tmp/shokidoki-x64.gz > /usr/bin/shokidoki
+zcat /tmp/shokidoki-x64.gz > /usr/games/shokidoki
 chmod +x /usr/games/shokidoki
 cat > /usr/share/applications/chess.desktop << EOF
 [Desktop Entry]
@@ -136,8 +136,8 @@ Type=Application
 Comment=Xboard of Chess
 Name=Chess
 Name[zh_CN]=国际象棋
-Exec=xboard -fcp fairymax -scp fairymax -pid /usr/share/games/xboard/themes/default/ -clockMode true -tc 5 -mps 30 -showMoveTime true -positionDir /usr/share/games/xboard/themes/conf/ics -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/wood_l.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/wood_d.png
-Icon=/usr/share/games/xboard/themes/default/BlackKnight.svg
+Exec=xboard -fUCI -fcp stockfish -sUCI -scp stockfish -pid /usr/share/games/xboard/themes/default -positionDir /usr/share/games/xboard/themes/conf/ics -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/wood_l.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/wood_d.png
+Icon=/usr/share/games/xboard/themes/default/WhiteKnight.svg
 Categories=Game
 Terminal=false
 EOF
@@ -148,7 +148,7 @@ Type=Application
 Comment=Xboard of Shogi
 Name=Shogi
 Name[zh_CN]=日本将棋
-Exec=xboard -variant shogi -fcp shokidoki -scp shokidoki -pid /usr/share/games/xboard/themes/shogi/ -clockMode true -tc 5 -mps 30 -showMoveTime true -positionDir /usr/share/games/xboard/themes/conf/shogi -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/wood_d.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/wood_d.png
+Exec=xboard -variant shogi -fcp shokidoki -scp shokidoki -pid /usr/share/games/xboard/themes/shogi -positionDir /usr/share/games/xboard/themes/conf/shogi -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/wood_d.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/wood_d.png
 Icon=/usr/share/games/xboard/themes/shogi/WhiteRook.svg
 Categories=Game
 Terminal=false
@@ -160,7 +160,7 @@ Type=Application
 Comment=Xboard of Xiangqi
 Name=Xiangqi
 Name[zh_CN]=中国象棋
-Exec=xboard -variant xiangqi -fcp hoixiangqi -pid /usr/share/games/xboard/themes/xiangqi/ -clockMode true -tc 5 -mps 30 -showMoveTime true -positionDir /usr/share/games/xboard/themes/conf/xq -useBoardTexture true -liteBackTextureFile /usr/share/games/xboard/themes/textures/xqboard-9x10.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/xqboard-9x10.png
+Exec=xboard -variant xiangqi -fcp sjaakii -scp sjaakii -pid /usr/share/games/xboard/themes/xiangqi -positionDir /usr/share/games/xboard/themes/conf/xq -useBoardTexture true -trueColors true -overrideLineGap 0 -liteBackTextureFile /usr/share/games/xboard/themes/textures/xqboard-9x10.png -darkBackTextureFile /usr/share/games/xboard/themes/textures/xqboard-9x10.png
 Icon=/usr/share/games/xboard/themes/xiangqi/BlackElephant.svg
 Categories=Game
 Terminal=false
